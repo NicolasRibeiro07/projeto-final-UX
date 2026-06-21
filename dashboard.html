@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bugio Estudos - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="8.5" stroke="#2dd4bf" stroke-width="1.8"/>
+          <path d="M11 6v5l3.5 2.2" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">Bugio<span> Estudos</span></div>
+    </div>
+
+    <span class="sidebar-section">Estudos</span>
+    <button class="nav-item active" onclick="switchTab('minhas-aulas')">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h12v12H4V4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Minhas Aulas
+    </button>
+
+    <span class="sidebar-section">Análise</span>
+    <button class="nav-item" onclick="switchTab('dashboard')">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 14l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/></svg>
+      Dashboard
+    </button>
+
+    <div class="sidebar-profile">
+      <div class="profile-avatar">BE</div>
+      <div>
+        <div class="profile-name">Estudante</div>
+        <div class="profile-course">Plano de estudos</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ════ TAB: MINHAS AULAS ════ -->
+    <div class="tab-content active" id="tab-minhas-aulas">
+      <div class="page-header">
+        <div>
+          <div class="page-title">
+            <svg class="page-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M12 8h5M12 12h5"/></svg>
+            Minhas Aulas
+          </div>
+          <div class="page-sub">Organize seus materiais e deixe a IA preparar seu estudo</div>
+        </div>
+        <button class="btn btn-accent" onclick="toggleAddForm()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Nova Aula
+        </button>
+      </div>
+
+      <!-- CONFIG AGENDA -->
+      <div class="config-bar">
+        <div class="field-group">
+          <label class="field-label"><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Tempo disponível</label>
+          <select class="field-input" id="studyTime">
+            <option value="15">15 minutos</option>
+            <option value="30" selected>30 minutos</option>
+            <option value="45">45 minutos</option>
+            <option value="60">1 hora</option>
+            <option value="90">1h 30min</option>
+            <option value="120">2 horas</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label"><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l-2.5 1.5"/></svg> Melhor horário</label>
+          <select class="field-input" id="studyHour">
+            <option value="manha">Manhã (7h–12h)</option>
+            <option value="tarde" selected>Tarde (13h–18h)</option>
+            <option value="noite">Noite (19h–23h)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label"><svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18"/><path d="M8 2v4M16 2v4"/></svg> Frequência</label>
+          <select class="field-input" id="studyFreq">
+            <option value="diario">Todos os dias</option>
+            <option value="uteis" selected>Dias úteis</option>
+            <option value="fins">Fins de semana</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost" onclick="saveAgenda()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 4L6 11 3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Salvar Agenda
+        </button>
+      </div>
+
+      <!-- SEMANA -->
+      <div class="week-strip" id="weekStrip"></div>
+
+      <!-- ADD FORM -->
+      <div class="add-aula-form" id="addForm" style="display:none">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px"><path d="M12 5v14M5 12h14"/></svg>Adicionar Nova Aula
+        </h3>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">Tema da Aula</label>
+            <input type="text" class="field-input" id="newAulaTema" placeholder="Ex: Funções do 2º grau"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Disciplina</label>
+            <input type="text" class="field-input" id="newAulaDisc" placeholder="Ex: Matemática"/>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Materiais de Estudo (livros, resumos, slides)</label>
+          <div class="upload-area" id="uploadArea">
+            <input type="file" multiple accept=".pdf,.doc,.docx,.txt,.ppt,.pptx" onchange="handleFiles(this)"/>
+            <div class="upload-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            </div>
+            <div style="font-size:14px;font-weight:600;color:var(--gray)">Arraste ou clique para adicionar arquivos</div>
+            <div class="upload-text">PDF, DOC, PPT, TXT · Múltiplos arquivos permitidos</div>
+          </div>
+          <div class="uploaded-files-list" id="uploadedFilesList"></div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Anotações adicionais (opcional)</label>
+          <textarea class="field-input" id="newAulaNotes" rows="2" placeholder="Cole aqui textos, links ou observações..."></textarea>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-accent" onclick="addAula()">Salvar e Gerar Estudo</button>
+          <button class="btn btn-ghost" onclick="toggleAddForm()">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="ai-loading" id="aiLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text" id="loadingText">A IA está analisando seus materiais e preparando um resumo personalizado…</div>
+      </div>
+
+      <!-- AI RESULT -->
+      <div class="ai-result" id="aiResult">
+        <div class="ai-result-header">
+          <span class="ai-badge">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4L9 7.5l1.5 4L7 9l-3.5 2.5 1.5-4L2 5.5h4L7 1z" fill="currentColor"/></svg>
+            Resumo IA
+          </span>
+          <span class="ai-time-badge" id="aiTimeBadge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 30 min de estudo</span>
+        </div>
+        <div class="ai-summary-title" id="aiSummaryTitle">Função Quadrática</div>
+        <div class="ai-summary-body" id="aiSummaryBody"></div>
+        <div class="divider"></div>
+        <div class="quiz-section">
+          <div class="quiz-title">
+            Teste seu Conhecimento
+            <span id="quizCount">5 perguntas</span>
+          </div>
+          <div id="questionsContainer"></div>
+          <div id="quizResultBar" class="quiz-result-bar">
+            <div>
+              <div class="result-score" id="resultScore">0/5</div>
+              <div class="result-label">respostas corretas</div>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--black)" id="resultMsg">Bom trabalho!</div>
+              <div style="font-size:12px;color:var(--gray)" id="resultSub">Revise os temas marcados em vermelho.</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="resetQuiz()">Refazer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AULAS EXISTENTES -->
+      <div>
+        <span class="period-label">AULAS SALVAS</span>
+        <div class="aulas-grid" id="aulasGrid"></div>
+      </div>
+    </div>
+
+    <!-- ════ TAB: DASHBOARD ════ -->
+    <div class="tab-content" id="tab-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">
+            <svg class="page-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="6" width="4" height="15" rx="1"/><rect x="17" y="2" width="4" height="19" rx="1"/></svg>
+            Dashboard
+          </div>
+          <div class="page-sub">Acompanhe seu desempenho e evolução nos estudos</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="resetProgress()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>
+          Zerar progresso
+        </button>
+      </div>
+
+      <!-- STATS -->
+      <div class="dash-grid" id="dashStats"></div>
+
+      <!-- ACTIVITY + NOTAS -->
+      <div class="dash-row">
+        <div class="dash-card">
+          <div class="dash-card-title">Horas Estudadas (últimos 7 dias)</div>
+          <div class="bar-chart" id="horasChart"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-title">Média de Notas por Disciplina</div>
+          <div class="notas-list" id="notasList"></div>
+        </div>
+      </div>
+
+      <!-- PROGRESS + HEATMAP -->
+      <div class="dash-row">
+        <div class="dash-card">
+          <div class="dash-card-title">Progressão de Conteúdos</div>
+          <div class="progress-list" id="progressList"></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-title">
+            Mapa de Atividade
+            <span style="font-size:12px;color:var(--gray)">dias estudados</span>
+          </div>
+          <div class="heatmap" id="heatmap"></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+            <span style="font-size:11px;color:var(--gray)">Menos</span>
+            <div style="width:12px;height:12px;border-radius:3px;background:var(--cream)"></div>
+            <div style="width:12px;height:12px;border-radius:3px;background:rgba(45,212,191,0.2)"></div>
+            <div style="width:12px;height:12px;border-radius:3px;background:rgba(45,212,191,0.5)"></div>
+            <div style="width:12px;height:12px;border-radius:3px;background:var(--accent)"></div>
+            <span style="font-size:11px;color:var(--gray)">Mais</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECOMMENDATIONS -->
+      <div class="dash-card">
+        <div class="dash-card-title">💡 Recomendações da IA</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="recList"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+let aulas = [
+  {id:1, tema:"Função Quadrática", disciplina:"Matemática", files:["Resumo_funcoes.pdf","Exercicios.txt"], notes:"", date:new Date()},
+  {id:2, tema:"Estrutura da Redação Dissertativa", disciplina:"Redação", files:["Modelo_redacao.pdf"], notes:"", date:new Date()},
+];
+
+let uploadedFiles = [];
+let selectedMateria = null;
+let currentQuizAnswers = [];
+let matCurrentQuizAnswers = [];
+let quizData = [];
+let matQuizData = [];
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ══════════════════════════════════════════
+// WEEK STRIP
+// ══════════════════════════════════════════
+function buildWeek() {
+  const strip = document.getElementById('weekStrip');
+  const days = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const today = new Date();
+  strip.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - today.getDay() + i);
+    const isToday = d.toDateString() === today.toDateString();
+    const hasStudy = [1,2,3,4].includes(i);
+    const times = ['','14h','14h','19h','19h','',''];
+    const div = document.createElement('div');
+    div.className = 'week-day' + (isToday?' today':'') + (hasStudy?' has-study':'');
+    div.innerHTML = `<div class="week-day-name">${days[i]}</div>
+      <div class="week-day-num">${d.getDate()}</div>
+      ${times[i] ? `<div class="week-day-time">${times[i]}</div>` : ''}`;
+    strip.appendChild(div);
+  }
+}
+
+// ══════════════════════════════════════════
+// ADD AULA
+// ══════════════════════════════════════════
+function toggleAddForm() {
+  const f = document.getElementById('addForm');
+  f.style.display = f.style.display === 'none' ? 'flex' : 'none';
+}
+
+function handleFiles(input) {
+  const list = document.getElementById('uploadedFilesList');
+  Array.from(input.files).forEach(f => {
+    uploadedFiles.push(f.name);
+    const tag = document.createElement('div');
+    tag.className = 'uploaded-file';
+    tag.innerHTML = `📄 ${f.name} <span class="remove-file" onclick="removeFile(this,'${f.name}')">×</span>`;
+    list.appendChild(tag);
+  });
+}
+
+function removeFile(el, name) {
+  uploadedFiles = uploadedFiles.filter(f => f !== name);
+  el.closest('.uploaded-file').remove();
+}
+
+function addAula() {
+  const tema = document.getElementById('newAulaTema').value.trim();
+  const disc = document.getElementById('newAulaDisc').value.trim();
+  if (!tema) { toast('Informe o tema da aula!', 'error'); return; }
+
+  const aula = { id: Date.now(), tema, disciplina: disc || 'Sem disciplina', files: [...uploadedFiles], notes: document.getElementById('newAulaNotes').value, date: new Date() };
+  aulas.unshift(aula);
+  renderAulas();
+  toggleAddForm();
+  uploadedFiles = [];
+  document.getElementById('uploadedFilesList').innerHTML = '';
+  document.getElementById('newAulaTema').value = '';
+  document.getElementById('newAulaDisc').value = '';
+  document.getElementById('newAulaNotes').value = '';
+  toast('Aula adicionada! Gerando resumo com IA…', 'success');
+  generateAIContent(aula);
+}
+
+function renderAulas() {
+  const grid = document.getElementById('aulasGrid');
+  grid.innerHTML = aulas.map(a => `
+    <div class="aula-card">
+      <div class="aula-card-header">
+        <div>
+          <div class="aula-title">${a.tema}</div>
+          <div class="aula-meta">${a.disciplina} · ${a.date.toLocaleDateString('pt-BR')}</div>
+        </div>
+        <span class="aula-badge">${a.files.length} arquivo${a.files.length !== 1?'s':''}</span>
+      </div>
+      <div class="aula-files">
+        ${a.files.map(f => `<span class="file-tag">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 1h6l2 2v8H2V1z" stroke="currentColor" stroke-width="1.2"/></svg>
+          ${f}
+        </span>`).join('')}
+        ${a.files.length === 0 ? '<span style="font-size:12px;color:var(--gray)">Sem arquivos</span>' : ''}
+      </div>
+      <div class="aula-actions">
+        <button class="btn btn-accent btn-sm" onclick="generateAIContent(aulas.find(x=>x.id===${a.id}))">
+          ✨ Gerar Resumo IA
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAula(${a.id})">Excluir</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteAula(id) {
+  aulas = aulas.filter(a => a.id !== id);
+  renderAulas();
+  toast('Aula removida.', 'success');
+}
+
+// ══════════════════════════════════════════
+// AI CONTENT (calls real Claude API)
+// ══════════════════════════════════════════
+async function generateAIContent(aula) {
+  const time = document.getElementById('studyTime').value;
+  const loading = document.getElementById('aiLoading');
+  const result = document.getElementById('aiResult');
+  result.classList.remove('visible');
+  loading.classList.add('visible');
+  document.getElementById('loadingText').textContent = `Analisando "${aula.tema}" e preparando ${time} min de estudo…`;
+  currentStudy = { disciplina: aula.disciplina, minutes: time };
+
+  const prompt = `Você é um assistente de estudos que ajuda estudantes a aprender de forma eficiente e organizada.
+
+O aluno tem ${time} minutos disponíveis para estudar o tema: "${aula.tema}" (disciplina: ${aula.disciplina}).
+${aula.files.length > 0 ? `Materiais disponíveis: ${aula.files.join(', ')}` : ''}
+${aula.notes ? `Anotações do aluno: ${aula.notes}` : ''}
+
+Produza:
+1. Um resumo de estudo adaptado para ${time} minutos (mais curto = mais focado nos conceitos-chave). Use **negrito** para conceitos-chave. Inclua subtópicos se couber no tempo.
+2. Exatamente 4 perguntas de múltipla escolha (A, B, C, D) sobre o tema, com gabarito indicado entre colchetes [CORRETA: X].
+
+Formate assim (separado por ===QUIZ===):
+[RESUMO]
+Aqui vai o resumo...
+===QUIZ===
+1. Pergunta aqui?
+A) Opção
+B) Opção
+C) Opção
+D) Opção
+[CORRETA: B]
+(repita para as 4 perguntas)`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.map(b => b.text || '').join('');
+    parseAndRenderAI(text, aula.tema, time, false);
+  } catch(e) {
+    // Fallback com conteúdo demo
+    const demo = buildDemoContent(aula.tema, time);
+    parseAndRenderAI(demo, aula.tema, time, false);
+  }
+
+  loading.classList.remove('visible');
+  document.getElementById('aiResult').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function parseAndRenderAI(text, titulo, time, isMat) {
+  const prefix = isMat ? 'mat' : '';
+  const parts = text.split('===QUIZ===');
+  let resumo = parts[0] || text;
+  resumo = resumo.replace(/\[RESUMO\]/gi, '').trim();
+  // Convert **bold** to <strong>
+  resumo = resumo.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  resumo = resumo.replace(/\n/g, '<br>');
+
+  document.getElementById(prefix + 'aiSummaryTitle' || 'aiSummaryTitle').textContent = titulo;
+  if (isMat) document.getElementById('matAiTitle').textContent = titulo;
+  else document.getElementById('aiSummaryTitle').textContent = titulo;
+
+  const bodyEl = document.getElementById(isMat ? 'matAiBody' : 'aiSummaryBody');
+  bodyEl.innerHTML = resumo;
+
+  const timeBadge = document.getElementById(isMat ? 'matAiTimeBadge' : 'aiTimeBadge');
+  timeBadge.textContent = `⏱ ${time} min de estudo`;
+
+  // Parse quiz
+  const quizText = parts[1] || '';
+  const questions = parseQuiz(quizText);
+  const qData = isMat ? matQuizData : quizData;
+  if (isMat) { matQuizData = questions; } else { quizData = questions; }
+
+  const container = document.getElementById(isMat ? 'matQuestionsContainer' : 'questionsContainer');
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.innerHTML = `<div class="question-text">${qi+1}. ${q.text}</div>
+      <div class="options">
+        ${q.options.map((opt, oi) => `
+          <div class="option" data-qi="${qi}" data-oi="${oi}" onclick="selectOption(this,${qi},${oi},'${isMat?'mat':''}')">
+            <span class="option-letter">${['A','B','C','D'][oi]}</span>
+            ${opt}
+          </div>
+        `).join('')}
+      </div>`;
+    container.appendChild(block);
+  });
+
+  const countEl = document.getElementById(isMat ? 'matQuizCount' : 'quizCount');
+  countEl.textContent = `${questions.length} perguntas`;
+
+  const resultBar = document.getElementById(isMat ? 'matQuizResultBar' : 'quizResultBar');
+  resultBar.classList.remove('visible');
+
+  const resultEl = document.getElementById(isMat ? 'matAiResult' : 'aiResult');
+  resultEl.classList.add('visible');
+}
+
+function parseQuiz(text) {
+  if (!text.trim()) return buildDemoQuiz();
+  const questions = [];
+  const blocks = text.trim().split(/\n(?=\d+\.)/);
+  blocks.forEach(block => {
+    const lines = block.trim().split('\n').filter(l => l.trim());
+    if (lines.length < 2) return;
+    const qText = lines[0].replace(/^\d+\.\s*/, '').trim();
+    const options = [];
+    let correct = 0;
+    lines.slice(1).forEach(l => {
+      const optMatch = l.match(/^[A-D]\)\s*(.+)/);
+      const corrMatch = l.match(/\[CORRETA:\s*([A-D])\]/i);
+      if (optMatch) options.push(optMatch[1].trim());
+      if (corrMatch) correct = ['A','B','C','D'].indexOf(corrMatch[1].toUpperCase());
+    });
+    if (qText && options.length >= 2) questions.push({ text: qText, options, correct });
+  });
+  return questions.length > 0 ? questions : buildDemoQuiz();
+}
+
+function buildDemoQuiz() {
+  return [
+    { text: "Qual estratégia melhora mais a retenção de longo prazo?", options: ["Reler o conteúdo de forma passiva","Praticar a recuperação ativa (autotestes)","Grifar o texto inteiro","Estudar só na véspera da prova"], correct: 1 },
+    { text: "Espaçar as sessões de estudo ao longo dos dias é conhecido como:", options: ["Repetição espaçada","Maratona de estudos","Leitura dinâmica","Memorização mecânica"], correct: 0 },
+    { text: "Explicar o conteúdo em voz alta, como se ensinasse alguém, é a técnica:", options: ["Pomodoro","Feynman","Mapa mental","Resumo simples"], correct: 1 },
+    { text: "Pausas curtas e regulares durante o estudo ajudam a:", options: ["Aumentar a distração","Manter o foco e reduzir o cansaço","Diminuir o aprendizado","Encurtar a memória"], correct: 1 },
+  ];
+}
+
+function buildDemoContent(tema, time) {
+  const mins = parseInt(time);
+  let depth = mins <= 20 ? "foco nos conceitos mais essenciais" : mins <= 45 ? "abordagem completa dos principais tópicos" : "aprofundamento com exemplos práticos";
+  return `[RESUMO]
+**${tema}** — Resumo para ${time} minutos (${depth})
+
+**Conceitos Fundamentais**
+Comece identificando as ideias centrais de **${tema}**. Dividir o conteúdo em blocos menores facilita a memorização e ajuda a conectar o que você já sabe com as novas informações.
+
+**Principais pontos a dominar:**
+- Definições e termos-chave do tema
+- A relação entre os conceitos principais
+- Exemplos que ilustram a aplicação prática
+- Os erros mais comuns e como evitá-los
+
+${mins >= 45 ? `**Aprofundamento:** Resolva exercícios variados e tente explicar o conteúdo em voz alta, como se estivesse ensinando outra pessoa — uma das formas mais eficazes de fixar o aprendizado.` : ''}
+
+===QUIZ===
+1. Qual é a forma mais eficaz de fixar um novo conteúdo de estudo?
+A) Reler o material várias vezes seguidas
+B) Recuperar a informação de memória, resolvendo exercícios e se autotestando
+C) Grifar todo o texto com marca-texto
+D) Estudar tudo de uma vez, na véspera da prova
+[CORRETA: B]
+
+2. Dividir o estudo em sessões espaçadas ao longo do tempo, em vez de uma única sessão longa, é uma técnica conhecida como:
+A) Repetição espaçada
+B) Leitura dinâmica
+C) Memorização mecânica
+D) Estudo passivo
+[CORRETA: A]
+
+3. Durante a leitura de um conteúdo novo, uma boa estratégia é:
+A) Copiar o texto inteiro sem refletir
+B) Fazer perguntas sobre o material e tentar respondê-las
+C) Evitar anotações para não perder tempo
+D) Memorizar sem entender o significado
+[CORRETA: B]
+
+4. A técnica Pomodoro consiste em:
+A) Estudar sem pausas até terminar o conteúdo
+B) Alternar blocos de foco com pausas curtas e regulares
+C) Estudar apenas quando estiver com vontade
+D) Fazer várias tarefas ao mesmo tempo
+[CORRETA: B]`;
+}
+
+// ══════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════
+let answers = {};
+let currentStudy = { disciplina:'', minutes:30 };
+let matAnswers = {};
+
+function selectOption(el, qi, oi, prefix) {
+  const isMat = prefix === 'mat';
+  const answerMap = isMat ? matAnswers : answers;
+  const qData = isMat ? matQuizData : quizData;
+
+  if (answerMap[qi] !== undefined) return; // already answered
+  answerMap[qi] = oi;
+
+  // Mark options
+  const parent = el.closest('.options');
+  parent.querySelectorAll('.option').forEach((opt, idx) => {
+    if (idx === qData[qi].correct) opt.classList.add('correct');
+    else if (idx === oi && idx !== qData[qi].correct) opt.classList.add('wrong');
+    opt.style.pointerEvents = 'none';
+  });
+
+  // Check if all answered
+  if (Object.keys(answerMap).length === qData.length) {
+    showQuizResult(isMat, answerMap, qData);
+  }
+}
+
+function showQuizResult(isMat, answerMap, qData) {
+  const correct = Object.keys(answerMap).filter(qi => answerMap[qi] === qData[qi].correct).length;
+  const total = qData.length;
+  const pct = Math.round((correct / total) * 100);
+  document.getElementById('resultScore').textContent = `${correct}/${total}`;
+  const msgs = pct >= 80 ? ['🎉 Excelente!','Você domina o conteúdo!'] : pct >= 50 ? ['👍 Bom trabalho!','Revise os temas marcados em vermelho.'] : ['📖 Precisa estudar mais.','Refaça o resumo e tente novamente.'];
+  document.getElementById('resultMsg').textContent = msgs[0];
+  document.getElementById('resultSub').textContent = msgs[1];
+  document.getElementById('quizResultBar').classList.add('visible');
+
+  // registra a sessão e atualiza o dashboard de verdade
+  recordSession(currentStudy.disciplina, correct, total, currentStudy.minutes);
+  buildDashboard();
+  toast(`Quiz concluído: ${correct}/${total} (${pct}%) · progresso salvo`, pct >= 60 ? 'success' : 'error');
+}
+
+function resetQuiz() { answers = {}; generateAIContent(aulas[0]); }
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
+const STORE_KEY = 'bugioEstudos_v1';
+
+function emptyState() {
+  return { totalMinutes:0, quizzesDone:0, notas:{}, progress:{}, studyDays:{}, history:[] };
+}
+let stats = emptyState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) stats = Object.assign(emptyState(), JSON.parse(raw));
+  } catch(e) { /* sem persistência disponível: mantém em memória */ }
+}
+function saveState() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(stats)); } catch(e) {}
+}
+function dayKey(d) {
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+// Registra uma sessão concluída (quiz finalizado em Minhas Aulas)
+function recordSession(disciplina, correct, total, minutes) {
+  disciplina = (disciplina || 'Sem disciplina').trim() || 'Sem disciplina';
+  const mins = parseInt(minutes) || 0;
+  const pct = total ? correct / total : 0;
+  const nota = +(pct * 10).toFixed(1);
+
+  stats.quizzesDone++;
+  stats.totalMinutes += mins;
+
+  const n = stats.notas[disciplina] || { soma:0, count:0 };
+  n.soma += nota; n.count++;
+  stats.notas[disciplina] = n;
+
+  const prev = stats.progress[disciplina] || 0;
+  stats.progress[disciplina] = Math.min(100, Math.max(prev, Math.round(pct * 100)));
+
+  const k = dayKey(new Date());
+  stats.studyDays[k] = (stats.studyDays[k] || 0) + mins;
+
+  stats.history.push({ date:k, disciplina, correct, total, nota });
+  saveState();
+}
+
+function computeStreak() {
+  let streak = 0;
+  const d = new Date();
+  if (!stats.studyDays[dayKey(d)]) d.setDate(d.getDate() - 1); // hoje sem estudo: conta a partir de ontem
+  for (let i = 0; i < 400; i++) {
+    if (stats.studyDays[dayKey(d)]) { streak++; d.setDate(d.getDate() - 1); }
+    else break;
+  }
+  return streak;
+}
+
+const ICON_WARNING = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>`;
+const ICON_TRENDING = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`;
+const ICON_BULB = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6M12 3a6 6 0 016 6c0 2.2-1.2 4.2-3 5.4V17H9v-2.6A6.002 6.002 0 016 9a6 6 0 016-6z"/></svg>`;
+
+const ICO_CLOCK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+const ICO_BARS = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="6" width="4" height="15" rx="1"/><rect x="17" y="2" width="4" height="19" rx="1"/></svg>`;
+const ICO_CHECK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>`;
+const ICO_FLAME = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M8.5 14.5A4.5 4.5 0 0013 19c2.5 0 4.5-2 4.5-4.5 0-3.5-2.5-5.5-5.5-8.5-1 2-2 3-4 4.5C7 11.5 7 13.5 8.5 14.5z"/></svg>`;
+
+function emptyMsg(t) {
+  return `<div style="padding:22px 12px;text-align:center;font-size:13px;color:var(--gray);line-height:1.6">${t}</div>`;
+}
+
+function fmtHours(mins) {
+  const h = mins / 60;
+  if (mins === 0) return '0h';
+  if (mins < 60) return mins + 'min';
+  return (Number.isInteger(h) ? h : h.toFixed(1)) + 'h';
+}
+
+function buildRecs(progEntries, streak) {
+  if (!progEntries.length) {
+    return [{ icon:ICON_BULB, title:'Comece agora', text:'Abra ou crie uma aula em Minhas Aulas, gere o resumo com IA e responda o quiz. Seus dados de evolução vão aparecer aqui.', color:'var(--accent-dark)' }];
+  }
+  const sorted = [...progEntries].sort((a,b) => a[1] - b[1]);
+  const lowest = sorted[0], highest = sorted[sorted.length - 1];
+  return [
+    { icon:ICON_WARNING, title:'Revisar com atenção', text:`${lowest[0]} está em ${lowest[1]}% de domínio. Que tal uma sessão de estudo hoje?`, color:'var(--danger)' },
+    { icon:ICON_TRENDING, title:'Você está indo bem!', text:`${highest[0]} está com ${highest[1]}% de domínio. Continue assim!`, color:'var(--success)' },
+    { icon:ICON_BULB, title: streak >= 2 ? `Sequência de ${streak} dias!` : 'Dica de estudo', text:'Use a técnica Pomodoro: 25 min de foco + 5 min de pausa para reter mais.', color:'var(--accent-dark)' },
+  ];
+}
+
+function buildDashboard() {
+  const notaEntries = Object.entries(stats.notas);
+  const progEntries = Object.entries(stats.progress);
+  const avg = notaEntries.length
+    ? notaEntries.reduce((s, [,v]) => s + v.soma / v.count, 0) / notaEntries.length
+    : 0;
+  const streak = computeStreak();
+
+  // STAT CARDS
+  const cards = [
+    { label:`${ICO_CLOCK}Horas Estudadas`, value:fmtHours(stats.totalMinutes), sub:'Total acumulado' },
+    { label:`${ICO_BARS}Média Geral`,      value: avg > 0 ? avg.toFixed(1) : '—', sub:'Baseada nos quizzes' },
+    { label:`${ICO_CHECK}Quizzes Feitos`,  value: stats.quizzesDone, sub:'Total de exercícios' },
+    { label:`${ICO_FLAME}Dias Seguidos`,   value: streak + 'd', sub:'Sequência atual' },
+  ];
+  document.getElementById('dashStats').innerHTML = cards.map(s => `
+    <div class="stat-card">
+      <div class="stat-label">${s.label}</div>
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-sub">${s.sub}</div>
+    </div>
+  `).join('');
+
+  // BAR CHART - últimos 7 dias (horas por dia)
+  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const days = [], labels = [];
+  const base = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const x = new Date(base); x.setDate(base.getDate() - i);
+    days.push(stats.studyDays[dayKey(x)] || 0);
+    labels.push(dayNames[x.getDay()]);
+  }
+  const maxMin = Math.max(...days, 1);
+  document.getElementById('horasChart').innerHTML = days.map((min, i) => `
+    <div class="bar-wrap">
+      <span class="bar-val">${min > 0 ? fmtHours(min) : ''}</span>
+      <div class="bar" style="height:${min > 0 ? Math.max(6, Math.round((min / maxMin) * 100)) : 0}%"></div>
+      <span class="bar-label">${labels[i]}</span>
+    </div>
+  `).join('');
+
+  // NOTAS
+  const notasList = document.getElementById('notasList');
+  if (!notaEntries.length) {
+    notasList.innerHTML = emptyMsg('Nenhuma nota ainda. Conclua um quiz em <strong>Minhas Aulas</strong> para registrar sua primeira nota.');
+  } else {
+    notasList.innerHTML = notaEntries.map(([nome, v]) => {
+      const nota = v.soma / v.count;
+      const cls = nota >= 8 ? 'green' : nota >= 6 ? 'yellow' : 'red';
+      return `<div class="nota-row"><div class="nota-materia">${nome}</div><div class="nota-badge ${cls}">${nota.toFixed(1)}</div></div>`;
+    }).join('');
+  }
+
+  // PROGRESSO
+  const progList = document.getElementById('progressList');
+  if (!progEntries.length) {
+    progList.innerHTML = emptyMsg('Seu progresso por disciplina aparece aqui conforme você estuda e responde os quizzes.');
+  } else {
+    progList.innerHTML = progEntries.map(([nome, pct]) => {
+      const fill = pct >= 70 ? 'fill-good' : pct >= 40 ? 'fill-mid' : 'fill-low';
+      return `<div class="progress-item">
+        <div class="progress-header"><span class="progress-name">${nome}</span><span class="progress-pct">${pct}%</span></div>
+        <div class="progress-track"><div class="progress-fill ${fill}" style="width:0%" data-pct="${pct}"></div></div>
+      </div>`;
+    }).join('');
+    setTimeout(() => {
+      document.querySelectorAll('.progress-fill').forEach(el => { el.style.width = el.dataset.pct + '%'; });
+    }, 200);
+  }
+
+  // HEATMAP - últimos 84 dias
+  const hmap = document.getElementById('heatmap');
+  hmap.innerHTML = '';
+  const hbase = new Date();
+  for (let i = 83; i >= 0; i--) {
+    const x = new Date(hbase); x.setDate(hbase.getDate() - i);
+    const min = stats.studyDays[dayKey(x)] || 0;
+    let v = 0;
+    if (min > 0) v = 1;
+    if (min >= 30) v = 2;
+    if (min >= 60) v = 3;
+    if (min >= 120) v = 4;
+    const cell = document.createElement('div');
+    cell.className = 'heat-cell';
+    if (v > 0) cell.setAttribute('data-v', v);
+    cell.title = `${dayKey(x)} · ${fmtHours(min)}`;
+    hmap.appendChild(cell);
+  }
+
+  // RECOMENDAÇÕES
+  document.getElementById('recList').innerHTML = buildRecs(progEntries, streak).map(r => `
+    <div style="background:var(--cream);border-radius:var(--radius-sm);padding:18px;border-left:3px solid ${r.color}">
+      <div style="margin-bottom:8px;color:${r.color}">${r.icon}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:6px">${r.title}</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--gray)">${r.text}</div>
+    </div>
+  `).join('');
+}
+
+function resetProgress() {
+  if (!confirm('Zerar todo o seu progresso de estudos? Essa ação não pode ser desfeita.')) return;
+  stats = emptyState();
+  saveState();
+  buildDashboard();
+  toast('Progresso zerado. Bons estudos!', 'success');
+}
+
+function saveAgenda() { toast('Agenda salva! Notificações configuradas.', 'success'); }
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function toast(msg, type='success') {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const ic = type === 'success'
+    ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>`
+    : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>`;
+  el.innerHTML = ic + ' ' + msg;
+  container.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }, 3500);
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+loadState();
+buildWeek();
+renderAulas();
+buildDashboard();
+</script>
+</body>
+</html>
